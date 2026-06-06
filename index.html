@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chaktoder Premier League</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #FFD700;
+  --gold-light: #FFE85C;
+  --gold-dark: #B8860B;
+  --blue-deep: #0A0E2A;
+  --blue-mid: #0D1A4A;
+  --blue-bright: #1A3A8A;
+  --red-deep: #2A0A0A;
+  --red-mid: #4A0D0D;
+  --white: #F5F0E8;
+  --text-muted: #A0A8C0;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { background:var(--blue-deep); color:var(--white); font-family:'Rajdhani',sans-serif; overflow-x:hidden; }
+
+.stars {
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(1px 1px at 10% 15%, rgba(255,215,0,0.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 25% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 50% 10%, rgba(255,215,0,0.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 70% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 60%, rgba(255,215,0,0.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 35% 75%, rgba(255,255,255,0.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 90% 85%, rgba(255,215,0,0.5) 0%, transparent 100%);
+}
+
+nav {
+  position:fixed; top:0; width:100%; z-index:100;
+  background:linear-gradient(180deg, rgba(10,14,42,0.98) 0%, rgba(10,14,42,0.85) 100%);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,215,0,0.2);
+  padding:0 1.5rem;
+  display:flex; align-items:center; justify-content:space-between;
+  height:60px; gap:1rem;
+}
+.nav-logo { font-family:'Cinzel Decorative',serif; font-size:0.9rem; font-weight:900; background:linear-gradient(90deg,var(--gold),#fff,var(--gold)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; white-space:nowrap; }
+.nav-links { display:flex; gap:1rem; list-style:none; flex-wrap:wrap; }
+.nav-links a { color:var(--text-muted); text-decoration:none; font-size:0.8rem; font-weight:600; letter-spacing:1px; text-transform:uppercase; transition:color 0.3s; }
+.nav-links a:hover { color:var(--gold); }
+.admin-btn { background:linear-gradient(135deg,var(--gold-dark),var(--gold)); color:#000; border:none; padding:7px 16px; border-radius:20px; font-size:0.8rem; font-weight:700; cursor:pointer; font-family:'Rajdhani',sans-serif; letter-spacing:1px; white-space:nowrap; }
+
+/* HERO */
+.hero {
+  position:relative; min-height:100vh;
+  display:flex; align-items:center; justify-content:center; text-align:center;
+  background:radial-gradient(ellipse at 50% 0%, rgba(26,58,138,0.6) 0%, transparent 60%),
+             radial-gradient(ellipse at 50% 100%, rgba(184,134,11,0.15) 0%, transparent 60%);
+  padding:80px 1rem 2rem; z-index:1;
+}
+.hero-badge { display:inline-block; border:1px solid rgba(255,215,0,0.4); background:rgba(255,215,0,0.08); color:var(--gold); font-size:0.75rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; padding:6px 20px; border-radius:100px; margin-bottom:1.5rem; animation:fadeDown 0.8s ease both; }
+.hero-title { font-family:'Cinzel Decorative',serif; font-size:clamp(2rem,6vw,5rem); font-weight:900; line-height:1.1; background:linear-gradient(135deg,var(--gold-light) 0%,var(--gold) 40%,#fff 60%,var(--gold) 80%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; animation:fadeDown 0.8s 0.1s ease both; margin-bottom:0.5rem; }
+.hero-subtitle { font-size:clamp(0.9rem,2.5vw,1.4rem); color:rgba(255,215,0,0.7); font-weight:600; letter-spacing:4px; text-transform:uppercase; animation:fadeDown 0.8s 0.2s ease both; margin-bottom:2rem; }
+.hero-trophy { font-size:clamp(4rem,12vw,8rem); animation:float 3s ease-in-out infinite, fadeDown 0.8s 0.3s ease both; display:block; line-height:1; filter:drop-shadow(0 0 40px rgba(255,215,0,0.5)); }
+.gold-divider { width:100px; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:1.5rem auto; }
+
+/* SECTIONS */
+section { position:relative; z-index:1; padding:70px 1.5rem; max-width:1100px; margin:0 auto; }
+.section-title { font-family:'Cinzel Decorative',serif; font-size:clamp(1.3rem,3.5vw,2rem); color:var(--gold); text-align:center; margin-bottom:0.5rem; }
+.section-sub { text-align:center; color:var(--text-muted); font-size:0.8rem; letter-spacing:3px; text-transform:uppercase; margin-bottom:2.5rem; }
+
+/* VS CARD */
+.vs-section { position:relative; z-index:1; padding:70px 1.5rem; }
+.vs-container { max-width:1000px; margin:0 auto; }
+.vs-card {
+  display:grid; grid-template-columns:1fr auto 1fr; gap:1.5rem; align-items:start;
+  background:linear-gradient(135deg, rgba(10,14,60,0.9), rgba(40,10,10,0.9));
+  border:1px solid rgba(255,215,0,0.25); border-radius:20px; padding:2rem;
+}
+.team-block { text-align:center; }
+.team-side-blue { border-right:1px solid rgba(255,215,0,0.15); padding-right:1.5rem; }
+.team-side-red { border-left:1px solid rgba(255,215,0,0.15); padding-left:1.5rem; }
+.team-logo-big { font-size:3.5rem; display:block; margin-bottom:0.5rem; filter:drop-shadow(0 0 20px rgba(255,215,0,0.4)); }
+.team-name-big { font-family:'Cinzel Decorative',serif; font-size:clamp(0.9rem,2vw,1.3rem); color:var(--gold); margin-bottom:0.3rem; }
+.team-type-badge { display:inline-block; font-size:0.7rem; letter-spacing:2px; padding:3px 10px; border-radius:20px; margin-bottom:1rem; }
+.badge-blue { background:rgba(26,58,138,0.5); border:1px solid rgba(126,168,255,0.4); color:#7EA8FF; }
+.badge-red { background:rgba(138,26,26,0.5); border:1px solid rgba(255,126,126,0.4); color:#FF7E7E; }
+
+.captain-row { display:flex; gap:0.7rem; justify-content:center; margin-bottom:1rem; flex-wrap:wrap; }
+.captain-tag { background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.25); border-radius:8px; padding:6px 10px; }
+.captain-label { font-size:0.6rem; color:var(--gold); letter-spacing:2px; text-transform:uppercase; display:block; }
+.captain-name { font-size:0.85rem; font-weight:700; }
+
+.players-list { text-align:left; }
+.players-list-title { font-size:0.7rem; letter-spacing:2px; color:var(--gold); text-transform:uppercase; text-align:center; margin-bottom:0.6rem; border-bottom:1px solid rgba(255,215,0,0.15); padding-bottom:0.4rem; }
+.player-row { display:flex; align-items:center; gap:0.5rem; padding:5px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+.player-num { font-size:0.7rem; color:var(--gold); font-weight:700; min-width:18px; }
+.player-n { font-size:0.85rem; font-weight:600; }
+
+.vs-center { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:1.2rem; padding:0 0.5rem; }
+.vs-text { font-family:'Cinzel Decorative',serif; font-size:clamp(1.5rem,4vw,2.8rem); background:linear-gradient(135deg,#FF4444,var(--gold),#FF4444); -webkit-background-clip:text; -webkit-text-fill-color:transparent; filter:drop-shadow(0 0 15px rgba(255,100,0,0.5)); }
+.match-info-center { background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.25); border-radius:12px; padding:1rem 1.2rem; text-align:center; }
+.match-time-big { font-size:1.6rem; font-weight:700; color:var(--gold); font-family:'Cinzel Decorative',serif; }
+.match-info-label { font-size:0.65rem; letter-spacing:2px; color:var(--text-muted); text-transform:uppercase; }
+.match-venue { font-size:0.8rem; margin-top:0.5rem; }
+
+/* POINTS TABLE */
+.table-wrap { background:rgba(13,26,74,0.6); border:1px solid rgba(255,215,0,0.15); border-radius:16px; overflow:hidden; backdrop-filter:blur(8px); }
+table { width:100%; border-collapse:collapse; }
+thead tr { background:linear-gradient(90deg,rgba(255,215,0,0.15),rgba(255,215,0,0.05)); border-bottom:1px solid rgba(255,215,0,0.3); }
+th { padding:12px 14px; font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; color:var(--gold); font-weight:700; text-align:center; }
+th:first-child { text-align:left; }
+tbody tr { border-bottom:1px solid rgba(255,255,255,0.05); transition:background 0.2s; }
+tbody tr:hover { background:rgba(255,215,0,0.05); }
+tbody tr:last-child { border-bottom:none; }
+td { padding:13px 14px; font-size:0.9rem; font-weight:500; text-align:center; color:var(--white); }
+td:first-child { text-align:left; }
+.rank-badge { display:inline-flex; align-items:center; justify-content:center; width:26px; height:26px; border-radius:50%; font-weight:700; font-size:0.8rem; margin-right:6px; }
+.rank-1 { background:linear-gradient(135deg,#FFD700,#B8860B); color:#000; }
+.rank-2 { background:linear-gradient(135deg,#C0C0C0,#808080); color:#000; }
+.team-name-td { font-weight:700; font-size:0.95rem; }
+.pts { color:var(--gold); font-weight:700; font-size:1.05rem; }
+
+/* MOTM */
+.motm-card { background:linear-gradient(135deg,rgba(184,134,11,0.15),rgba(13,26,74,0.8)); border:1px solid rgba(255,215,0,0.35); border-radius:20px; padding:2.5rem; text-align:center; max-width:460px; margin:0 auto; }
+.motm-crown { font-size:3.5rem; display:block; margin-bottom:0.5rem; }
+.motm-name { font-family:'Cinzel Decorative',serif; font-size:1.6rem; color:var(--gold); margin-bottom:0.3rem; }
+.motm-match { font-size:0.75rem; color:var(--text-muted); letter-spacing:2px; margin-bottom:1.5rem; }
+.motm-stats { display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; }
+.motm-stat { text-align:center; }
+.motm-val { font-size:1.8rem; font-weight:700; color:var(--gold); display:block; font-family:'Cinzel Decorative',serif; }
+.motm-key { font-size:0.65rem; color:var(--text-muted); letter-spacing:2px; text-transform:uppercase; }
+.motm-quote { margin-top:1.5rem; color:var(--text-muted); font-size:0.85rem; font-style:italic; }
+
+/* ADMIN PANEL */
+.admin-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:999; backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:1rem; }
+.admin-overlay.open { display:flex; }
+.admin-panel { background:var(--blue-mid); border:1px solid rgba(255,215,0,0.3); border-radius:20px; padding:2rem; width:100%; max-width:600px; max-height:90vh; overflow-y:auto; }
+.admin-panel h2 { font-family:'Cinzel Decorative',serif; color:var(--gold); margin-bottom:1.5rem; font-size:1.2rem; }
+.admin-section { margin-bottom:1.5rem; padding-bottom:1.5rem; border-bottom:1px solid rgba(255,255,255,0.08); }
+.admin-section h3 { color:var(--gold); font-size:0.85rem; letter-spacing:2px; text-transform:uppercase; margin-bottom:1rem; }
+.admin-row { display:flex; gap:0.7rem; align-items:center; margin-bottom:0.7rem; flex-wrap:wrap; }
+.admin-row label { font-size:0.8rem; color:var(--text-muted); min-width:70px; }
+.admin-input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,215,0,0.2); border-radius:8px; padding:7px 12px; color:var(--white); font-family:'Rajdhani',sans-serif; font-size:0.9rem; flex:1; min-width:100px; }
+.admin-input:focus { outline:none; border-color:rgba(255,215,0,0.5); }
+.save-btn { background:linear-gradient(135deg,var(--gold-dark),var(--gold)); color:#000; border:none; padding:10px 24px; border-radius:20px; font-size:0.9rem; font-weight:700; cursor:pointer; font-family:'Rajdhani',sans-serif; letter-spacing:1px; width:100%; margin-top:0.5rem; }
+.save-btn:hover { opacity:0.9; }
+.close-btn { background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2); color:var(--white); padding:8px 18px; border-radius:20px; font-size:0.85rem; cursor:pointer; font-family:'Rajdhani',sans-serif; margin-top:0.5rem; width:100%; }
+
+/* SCHEDULE */
+.schedule-grid { display:grid; gap:1rem; }
+.match-card { background:rgba(13,26,74,0.6); border:1px solid rgba(255,215,0,0.12); border-radius:12px; padding:1.1rem 1.3rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.8rem; transition:border-color 0.3s; }
+.match-card:hover { border-color:rgba(255,215,0,0.4); }
+.match-date-td { font-size:0.75rem; color:var(--gold); letter-spacing:1px; text-transform:uppercase; font-weight:700; }
+.match-teams-row { display:flex; align-items:center; gap:0.8rem; flex:1; justify-content:center; flex-wrap:wrap; }
+.team-tag { font-weight:700; font-size:0.9rem; background:rgba(255,255,255,0.05); padding:5px 12px; border-radius:8px; border:1px solid rgba(255,255,255,0.1); }
+.vs-small { font-family:'Cinzel Decorative',serif; font-size:0.75rem; color:var(--gold); }
+.status-badge { font-size:0.7rem; font-weight:700; letter-spacing:1px; padding:4px 10px; border-radius:100px; white-space:nowrap; }
+.status-upcoming { background:rgba(26,58,138,0.6); color:#7EA8FF; border:1px solid rgba(126,168,255,0.3); }
+.status-cancelled { background:rgba(255,100,0,0.1); color:#FF9966; border:1px solid rgba(255,100,0,0.3); }
+.status-done { background:rgba(255,215,0,0.1); color:var(--gold); border:1px solid rgba(255,215,0,0.3); }
+
+footer { position:relative; z-index:1; text-align:center; padding:2rem; border-top:1px solid rgba(255,215,0,0.1); color:var(--text-muted); font-size:0.85rem; }
+footer span { color:var(--gold); }
+
+@keyframes fadeDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+::-webkit-scrollbar { width:5px; }
+::-webkit-scrollbar-track { background:var(--blue-deep); }
+::-webkit-scrollbar-thumb { background:rgba(255,215,0,0.3); border-radius:3px; }
+
+@media(max-width:700px) {
+  .nav-links { display:none; }
+  .vs-card { grid-template-columns:1fr; }
+  .team-side-blue { border-right:none; padding-right:0; border-bottom:1px solid rgba(255,215,0,0.15); padding-bottom:1.5rem; }
+  .team-side-red { border-left:none; padding-left:0; border-top:1px solid rgba(255,215,0,0.15); padding-top:1.5rem; }
+}
+</style>
+</head>
+<body>
+<div class="stars"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⭐ Chaktoder Premier League</div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#teams">Teams</a></li>
+    <li><a href="#points">Points</a></li>
+    <li><a href="#schedule">Schedule</a></li>
+    <li><a href="#motm">MOTM</a></li>
+  </ul>
+  <button class="admin-btn" onclick="openAdmin()">⚙️ Edit</button>
+</nav>
+
+<!-- HERO -->
+<div id="home" class="hero">
+  <div>
+    <div class="hero-badge">🏏 Season 2026 · Ek Gaon, Ek Junoon</div>
+    <h1 class="hero-title">Chaktoder<br>Premier League</h1>
+    <p class="hero-subtitle">चकटोडर प्रीमियम लीग</p>
+    <div class="gold-divider"></div>
+    <span class="hero-trophy">🏆</span>
+  </div>
+</div>
+
+<!-- TEAMS VS -->
+<div id="teams" class="vs-section">
+  <div class="vs-container">
+    <h2 class="section-title">Maha Muqabla</h2>
+    <p class="section-sub" style="margin-bottom:2rem;">महा मुक़ाबला — दो टीमें, एक जुनून</p>
+    <div class="vs-card">
+      <!-- TEAM A -->
+      <div class="team-block team-side-blue">
+        <span class="team-logo-big">🦁</span>
+        <div class="team-name-big">Chaktoder Super Kings</div>
+        <span class="team-type-badge badge-blue">TEAM A</span>
+        <div class="captain-row">
+          <div class="captain-tag">
+            <span class="captain-label">Captain</span>
+            <span class="captain-name">Ansh Tiwari</span>
+          </div>
+          <div class="captain-tag">
+            <span class="captain-label">Vice Captain</span>
+            <span class="captain-name">Chintu Vlogger</span>
+          </div>
+        </div>
+        <div class="players-list">
+          <div class="players-list-title">Players</div>
+          <div class="player-row"><span class="player-num">1</span><span class="player-n">Golu Bhaiya</span></div>
+          <div class="player-row"><span class="player-num">2</span><span class="player-n">Harsh Pandey</span></div>
+          <div class="player-row"><span class="player-num">3</span><span class="player-n">Ashish Tiwari</span></div>
+          <div class="player-row"><span class="player-num">4</span><span class="player-n">Rohit Tiwari</span></div>
+          <div class="player-row"><span class="player-num">5</span><span class="player-n">Atul Tiwari</span></div>
+          <div class="player-row"><span class="player-num">6</span><span class="player-n">Pushu Tiwari</span></div>
+          <div class="player-row"><span class="player-num">7</span><span class="player-n">Kirtan Tiwari</span></div>
+          <div class="player-row"><span class="player-num">10</span><span class="player-n">Nihal Tiwari</span></div>
+        </div>
+      </div>
+
+      <!-- CENTER -->
+      <div class="vs-center">
+        <div class="vs-text">VS</div>
+        <div class="match-info-center">
+          <div class="match-info-label">Match Day</div>
+          <div class="match-time-big" id="display-time">5:00 PM</div>
+          <div class="match-info-label">Shaam</div>
+          <div class="match-venue" id="display-venue">📍 Chaktoder Cricket Ground</div>
+          <div style="margin-top:0.5rem; font-size:0.75rem; color:var(--gold);" id="display-date">6 June 2026</div>
+        </div>
+      </div>
+
+      <!-- TEAM B -->
+      <div class="team-block team-side-red">
+        <span class="team-logo-big">👑</span>
+        <div class="team-name-big">Chaktoder Royals</div>
+        <span class="team-type-badge badge-red">TEAM B</span>
+        <div class="captain-row">
+          <div class="captain-tag">
+            <span class="captain-label">Captain</span>
+            <span class="captain-name">Pranshu Tiwari</span>
+          </div>
+          <div class="captain-tag">
+            <span class="captain-label">Vice Captain</span>
+            <span class="captain-name">Pranjal Tiwari</span>
+          </div>
+        </div>
+        <div class="players-list">
+          <div class="players-list-title">Players</div>
+          <div class="player-row"><span class="player-num">1</span><span class="player-n">Vipul Tiwari</span></div>
+          <div class="player-row"><span class="player-num">2</span><span class="player-n">Rishi Tiwari</span></div>
+          <div class="player-row"><span class="player-num">3</span><span class="player-n">Rohan Tiwari (Hunny)</span></div>
+          <div class="player-row"><span class="player-num">4</span><span class="player-n">Raunak Mishra</span></div>
+          <div class="player-row"><span class="player-num">5</span><span class="player-n">Nitun Tiwari</span></div>
+          <div class="player-row"><span class="player-num">6</span><span class="player-n">Akash Tiwari</span></div>
+          <div class="player-row"><span class="player-num">7</span><span class="player-n">Betu Tiwari</span></div>
+          <div class="player-row"><span class="player-num">10</span><span class="player-n">Anurag Tiwari</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POINTS TABLE -->
+<section id="points">
+  <h2 class="section-title">Points Table</h2>
+  <p class="section-sub">अंक तालिका</p>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Team</th><th>M</th><th>W</th><th>L</th><th>NR</th><th>PTS</th><th>NRR</th>
+        </tr>
+      </thead>
+      <tbody id="points-tbody">
+        <tr>
+          <td><span class="rank-badge rank-1">1</span><span class="team-name-td">Chaktoder Super Kings</span></td>
+          <td id="csk-m">0</td><td id="csk-w">0</td><td id="csk-l">0</td><td id="csk-nr">0</td>
+          <td class="pts" id="csk-pts">0</td><td id="csk-nrr">0.00</td>
+        </tr>
+        <tr>
+          <td><span class="rank-badge rank-2">2</span><span class="team-name-td">Chaktoder Royals</span></td>
+          <td id="cr-m">0</td><td id="cr-w">0</td><td id="cr-l">0</td><td id="cr-nr">0</td>
+          <td class="pts" id="cr-pts">0</td><td id="cr-nrr">0.00</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- SCHEDULE -->
+<section id="schedule">
+  <h2 class="section-title">Match Schedule</h2>
+  <p class="section-sub">मैच कार्यक्रम</p>
+  <div class="schedule-grid">
+    <div class="match-card">
+      <div class="match-date-td">📅 5 June 2026</div>
+      <div class="match-teams-row">
+        <span class="team-tag">Super Kings</span>
+        <span class="vs-small">VS</span>
+        <span class="team-tag">Royals</span>
+      </div>
+      <span class="status-badge status-cancelled">⛈️ Baarish — Raddh</span>
+    </div>
+    <div class="match-card">
+      <div class="match-date-td">📅 6 June 2026 · 5:00 PM</div>
+      <div class="match-teams-row">
+        <span class="team-tag">Super Kings</span>
+        <span class="vs-small">VS</span>
+        <span class="team-tag">Royals</span>
+      </div>
+      <span class="status-badge status-upcoming" id="next-match-status">⏳ Upcoming</span>
+    </div>
+  </div>
+</section>
+
+<!-- MAN OF THE MATCH -->
+<section id="motm">
+  <h2 class="section-title">Man of the Match</h2>
+  <p class="section-sub">मैच के हीरो</p>
+  <div class="motm-card">
+    <span class="motm-crown">👑</span>
+    <div class="motm-name" id="motm-name">— Abhi Tak Koi Nahi —</div>
+    <div class="motm-match" id="motm-match">MATCH KE BAAD UPDATE HOGA</div>
+    <div class="gold-divider"></div>
+    <div class="motm-stats">
+      <div class="motm-stat">
+        <span class="motm-val" id="motm-runs">—</span>
+        <span class="motm-key">Runs</span>
+      </div>
+      <div class="motm-stat">
+        <span class="motm-val" id="motm-wickets">—</span>
+        <span class="motm-key">Wickets</span>
+      </div>
+    </div>
+    <p class="motm-quote" id="motm-quote">"Match ke baad yahan ka hero announce hoga! 🏏"</p>
+  </div>
+</section>
+
+<footer>
+  <p>🏏 <span>Chaktoder Premier League</span> · Ek Gaon, Ek Junoon · 2026</p>
+  <p style="margin-top:0.4rem; font-size:0.75rem;">Play Hard · Respect All · Win Together</p>
+</footer>
+
+<!-- ADMIN PANEL -->
+<div class="admin-overlay" id="adminOverlay">
+  <div class="admin-panel">
+    <h2>⚙️ Admin Panel — Edit Karo</h2>
+
+    <div class="admin-section">
+      <h3>📊 Points Table — Super Kings (CSK)</h3>
+      <div class="admin-row"><label>Matches</label><input class="admin-input" id="in-csk-m" type="number" value="0"></div>
+      <div class="admin-row"><label>Wins</label><input class="admin-input" id="in-csk-w" type="number" value="0"></div>
+      <div class="admin-row"><label>Loss</label><input class="admin-input" id="in-csk-l" type="number" value="0"></div>
+      <div class="admin-row"><label>NR</label><input class="admin-input" id="in-csk-nr" type="number" value="0"></div>
+      <div class="admin-row"><label>Points</label><input class="admin-input" id="in-csk-pts" type="number" value="0"></div>
+      <div class="admin-row"><label>NRR</label><input class="admin-input" id="in-csk-nrr" type="text" value="0.00"></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>📊 Points Table — Royals (CR)</h3>
+      <div class="admin-row"><label>Matches</label><input class="admin-input" id="in-cr-m" type="number" value="0"></div>
+      <div class="admin-row"><label>Wins</label><input class="admin-input" id="in-cr-w" type="number" value="0"></div>
+      <div class="admin-row"><label>Loss</label><input class="admin-input" id="in-cr-l" type="number" value="0"></div>
+      <div class="admin-row"><label>NR</label><input class="admin-input" id="in-cr-nr" type="number" value="0"></div>
+      <div class="admin-row"><label>Points</label><input class="admin-input" id="in-cr-pts" type="number" value="0"></div>
+      <div class="admin-row"><label>NRR</label><input class="admin-input" id="in-cr-nrr" type="text" value="0.00"></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>🌟 Man of the Match</h3>
+      <div class="admin-row"><label>Naam</label><input class="admin-input" id="in-motm-name" type="text" value=""></div>
+      <div class="admin-row"><label>Match Info</label><input class="admin-input" id="in-motm-match" type="text" value=""></div>
+      <div class="admin-row"><label>Runs</label><input class="admin-input" id="in-motm-runs" type="text" value="—"></div>
+      <div class="admin-row"><label>Wickets</label><input class="admin-input" id="in-motm-wickets" type="text" value="—"></div>
+      <div class="admin-row"><label>Quote</label><input class="admin-input" id="in-motm-quote" type="text" value=""></div>
+    </div>
+
+    <div class="admin-section">
+      <h3>📅 Next Match Info</h3>
+      <div class="admin-row"><label>Date</label><input class="admin-input" id="in-date" type="text" value="6 June 2026"></div>
+      <div class="admin-row"><label>Time</label><input class="admin-input" id="in-time" type="text" value="5:00 PM"></div>
+      <div class="admin-row"><label>Venue</label><input class="admin-input" id="in-venue" type="text" value="Chaktoder Cricket Ground"></div>
+      <div class="admin-row">
+        <label>Status</label>
+        <select class="admin-input" id="in-status">
+          <option value="upcoming">⏳ Upcoming</option>
+          <option value="live">🔴 Live</option>
+          <option value="done">✅ Done</option>
+          <option value="cancelled">⛈️ Cancelled</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="save-btn" onclick="saveAll()">💾 Save Karo — Sabko Dikhe</button>
+    <button class="close-btn" onclick="closeAdmin()">✕ Band Karo</button>
+  </div>
+</div>
+
+<script>
+function openAdmin() { document.getElementById('adminOverlay').classList.add('open'); }
+function closeAdmin() { document.getElementById('adminOverlay').classList.remove('open'); }
+
+function saveAll() {
+  // Points CSK
+  document.getElementById('csk-m').textContent = document.getElementById('in-csk-m').value;
+  document.getElementById('csk-w').textContent = document.getElementById('in-csk-w').value;
+  document.getElementById('csk-l').textContent = document.getElementById('in-csk-l').value;
+  document.getElementById('csk-nr').textContent = document.getElementById('in-csk-nr').value;
+  document.getElementById('csk-pts').textContent = document.getElementById('in-csk-pts').value;
+  document.getElementById('csk-nrr').textContent = document.getElementById('in-csk-nrr').value;
+
+  // Points CR
+  document.getElementById('cr-m').textContent = document.getElementById('in-cr-m').value;
+  document.getElementById('cr-w').textContent = document.getElementById('in-cr-w').value;
+  document.getElementById('cr-l').textContent = document.getElementById('in-cr-l').value;
+  document.getElementById('cr-nr').textContent = document.getElementById('in-cr-nr').value;
+  document.getElementById('cr-pts').textContent = document.getElementById('in-cr-pts').value;
+  document.getElementById('cr-nrr').textContent = document.getElementById('in-cr-nrr').value;
+
+  // MOTM
+  document.getElementById('motm-name').textContent = document.getElementById('in-motm-name').value;
+  document.getElementById('motm-match').textContent = document.getElementById('in-motm-match').value;
+  document.getElementById('motm-runs').textContent = document.getElementById('in-motm-runs').value;
+  document.getElementById('motm-wickets').textContent = document.getElementById('in-motm-wickets').value;
+  document.getElementById('motm-quote').textContent = '"' + document.getElementById('in-motm-quote').value + '"';
+
+  // Match info
+  document.getElementById('display-date').textContent = document.getElementById('in-date').value;
+  document.getElementById('display-time').textContent = document.getElementById('in-time').value;
+  document.getElementById('display-venue').textContent = '📍 ' + document.getElementById('in-venue').value;
+
+  // Status
+  const statusEl = document.getElementById('next-match-status');
+  const statusVal = document.getElementById('in-status').value;
+  const statusMap = {
+    upcoming: { cls: 'status-upcoming', txt: '⏳ Upcoming' },
+    live:     { cls: 'status-live',     txt: '🔴 Live Now' },
+    done:     { cls: 'status-done',     txt: '✅ Completed' },
+    cancelled:{ cls: 'status-cancelled',txt: '⛈️ Cancelled' }
+  };
+  statusEl.className = 'status-badge ' + statusMap[statusVal].cls;
+  statusEl.textContent = statusMap[statusVal].txt;
+
+  closeAdmin();
+  // Flash confirmation
+  const btn = document.querySelector('.admin-btn');
+  btn.textContent = '✅ Saved!';
+  setTimeout(() => btn.textContent = '⚙️ Edit', 2000);
+}
+
+// Close on overlay click
+document.getElementById('adminOverlay').addEventListener('click', function(e) {
+  if(e.target === this) closeAdmin();
+});
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.match-card, .motm-card, .vs-card, .table-wrap').forEach(el => {
+  el.style.opacity='0'; el.style.transform='translateY(20px)';
+  el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
