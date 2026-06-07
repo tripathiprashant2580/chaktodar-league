@@ -458,7 +458,7 @@ function renderGallery(gallery){
 
 async function saveToSupabase(data){
   try {
-    const { error } = await sb.from(TABLE).upsert({ id: 1, data: data });
+    const { error } = await sb.from(TABLE).upsert({ id: 1, data: JSON.stringify(data) });
     if(error) console.error('Save error:', error);
   } catch(e){ console.error(e); }
 }
@@ -498,7 +498,7 @@ function applyAll(d){
 async function loadFromSupabase(){
   try {
     const { data, error } = await sb.from(TABLE).select('data').eq('id',1).single();
-    if(data && data.data){ window._cplData=data.data; applyAll(data.data); }
+    if(data && data.data){ const parsed = typeof data.data === "string" ? JSON.parse(data.data) : data.data; window._cplData=parsed; applyAll(parsed); }
   } catch(e){ console.log('No data yet'); }
 }
 
@@ -507,5 +507,4 @@ document.getElementById('pwOverlay').addEventListener('click',function(e){if(e.t
 document.getElementById('adminOverlay').addEventListener('click',function(e){if(e.target===this)closeAdmin();});
 </script>
 </body>
-</html>              
-
+</html>
